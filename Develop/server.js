@@ -6,6 +6,8 @@ const app = express();
 const db = require('./db/db.json')
 const uuid = require('./helpers/uuid')
 
+
+
 // Middleware for parsing JSON and urlencoded form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -22,6 +24,7 @@ app.get('/api/notes', (req, res) => {
   
 });
 
+// adding the notes to list after saveBtn clicked
 app.post('/api/notes', (req, res) => {
   const { title, text } = req.body;
   if (title && text) {
@@ -48,12 +51,30 @@ app.post('/api/notes', (req, res) => {
       console.log(response);
       res.status(201).json(response);
     } 
-    app.get('*', (req, res) =>
-        res.sendFile(path.join(__dirname, '/public/index.html'))
-    );
   });
 
+  app.get('/api/notes/:note_id', (req, res) => {
+    const requestedNote = req.params.note_id;
+    const result = [];
   
-  app.listen(PORT, () =>
-  console.log(`App listening at http://localhost:${PORT}`)
+    for (let i = 0; i < db.length; i++) {
+      const currentNote = db[i].note_id;
+      if (requestedNote === currentNote) {
+        result.push(db[i]);
+      }
+    }
+    return res.json(result);
+  });
+
+  app.post('/api/notes/:note_id', (req, res) => {
+    
+    return res.json(result);
+  });
+
+app.get('*', (req, res) =>
+    res.sendFile(path.join(__dirname, '/public/index.html'))
+);
+  
+app.listen(PORT, () =>
+console.log(`App listening at http://localhost:${PORT}`)
 );
