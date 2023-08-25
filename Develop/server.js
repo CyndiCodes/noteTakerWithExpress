@@ -53,28 +53,28 @@ app.post('/api/notes', (req, res) => {
     } 
   });
 
-  app.get('/api/notes/:note_id', (req, res) => {
-    const requestedNote = req.params.note_id;
-    const result = [];
-  
-    for (let i = 0; i < db.length; i++) {
-      const currentNote = db[i].note_id;
-      if (requestedNote === currentNote) {
-        result.push(db[i]);
-      }
-    }
-    return res.json(result);
-  });
+app.get('/api/notes/:note_id', (req, res) => {
+const requestedNote = req.params.note_id;
+const result = [];
 
-  app.post('/api/notes/:note_id', (req, res) => {
-    
-    return res.json(result);
-  });
+for (let i = 0; i < db.length; i++) {
+  const currentNote = db[i].note_id;
+  if (requestedNote === currentNote) {
+    result.push(db[i]);
+  }
+}
+return res.json(result);
+});
+
+app.post('/api/notes/:note_id', (req, res) => {
+
+return res.json(result);
+});
 
 app.get('*', (req, res) =>
-    res.sendFile(path.join(__dirname, '/public/index.html'))
+res.sendFile(path.join(__dirname, '/public/index.html'))
 );
-  
+
 app.listen(PORT, () =>
 console.log(`App listening at http://localhost:${PORT}`)
 );
