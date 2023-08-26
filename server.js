@@ -31,7 +31,7 @@ app.post('/api/notes', (req, res) => {
     const newNote = {
       title,
       text,
-      note_id: uuid()
+      id: uuid()
       }
       
       db.push(newNote)
@@ -53,23 +53,28 @@ app.post('/api/notes', (req, res) => {
     } 
   });
 
-app.get('/api/notes/:note_id', (req, res) => {
-const requestedNote = req.params.note_id;
+app.delete('/api/notes/:id', (req, res) => {
+const requestedNote = req.params.id;
 const result = [];
-
+// console.log(requestedNote)
 for (let i = 0; i < db.length; i++) {
-  const currentNote = db[i].note_id;
-  if (requestedNote === currentNote) {
+  const currentNote = db[i].id;
+  // console.log(currentNote)
+  if (requestedNote !== currentNote) {
     result.push(db[i]);
   }
+  console.log(result)
+  const noteString = JSON.stringify(result);
+      
+  fs.writeFile(`./db/db.json`, noteString, (err) => 
+  err
+  ? console.error(err)
+  : console.log(`${newNote.title}`));
 }
 return res.json(result);
 });
 
-app.post('/api/notes/:note_id', (req, res) => {
 
-return res.json(result);
-});
 
 app.get('*', (req, res) =>
 res.sendFile(path.join(__dirname, '/public/index.html'))
@@ -78,3 +83,11 @@ res.sendFile(path.join(__dirname, '/public/index.html'))
 app.listen(PORT, () =>
 console.log(`App listening at http://localhost:${PORT}`)
 );
+
+
+
+let object = {
+ hello: "this is a greeting",
+ bye: "get outta here"
+}
+console.log(object.hello)
